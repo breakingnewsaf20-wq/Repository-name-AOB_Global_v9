@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ps" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Afghan Online Bazaar — AOB</title>
+<style>
+:root{--navy:#063b70;--blue:#0877c9;--orange:#f28c18;--green:#087b67;--bg:#f5f7fa;--ink:#182532}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.top{background:var(--navy);color:#fff;padding:8px 5%;display:flex;justify-content:space-between;font-size:13px}
+.nav{position:sticky;top:0;z-index:10;background:#fff;padding:13px 5%;display:flex;gap:10px;align-items:center;box-shadow:0 2px 15px #0001}
+.logo{font-weight:900;font-size:22px;color:var(--navy);white-space:nowrap}.logo b{color:var(--orange)}
+.search{display:flex;flex:1}.search input{width:100%;border:1px solid #ddd;padding:11px;border-radius:0 9px 9px 0}.search button{border:0;background:var(--orange);color:#fff;padding:0 18px;border-radius:9px 0 0 9px}
+.iconbtn{border:0;background:#eef3f7;padding:10px;border-radius:8px}
+.hero{margin:24px 5%;padding:45px 6%;border-radius:24px;background:linear-gradient(135deg,#063b70,#0a8b76);color:#fff;display:flex;align-items:center;justify-content:space-between}
+.hero h1{font-size:42px;margin:0 0 12px}.hero p{font-size:18px;max-width:650px;line-height:1.8}.heroart{font-size:100px}
+.container{padding:0 5% 25px}.categories,.grid{display:grid;gap:14px}.categories{grid-template-columns:repeat(7,1fr)}.grid{grid-template-columns:repeat(4,1fr)}
+.category,.card,.panel{background:#fff;border-radius:15px;box-shadow:0 3px 15px #0000000c}.category{text-align:center;padding:17px}.category .ico{font-size:31px;display:block}.card{overflow:hidden}.photo{height:165px;background:#edf2f5;display:flex;align-items:center;justify-content:center;font-size:65px}.info{padding:14px}.info h3{margin:8px 0;min-height:38px}.price{color:var(--green);font-size:19px;font-weight:800}.muted{color:#71808c;font-size:13px}.primary{border:0;background:var(--orange);color:#fff;border-radius:9px;padding:10px 16px}.green{border:0;background:var(--green);color:#fff;border-radius:9px;padding:9px 14px;width:100%;margin-top:8px}.secondary{border:0;background:#eef3f7;padding:9px 12px;border-radius:8px;width:100%;margin-top:7px}
+footer{background:#102a3d;color:#fff;padding:35px 5%;margin-top:30px}.footergrid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:30;align-items:center;justify-content:center;padding:15px}.box{background:#fff;border-radius:16px;width:min(760px,100%);max-height:92vh;overflow:auto;padding:22px}.close{float:left;border:0;background:#eee;border-radius:50%;padding:5px 10px}.box input,.box select,.box textarea{width:100%;padding:11px;border:1px solid #ddd;border-radius:8px;margin:5px 0 10px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{background:#eef7f5;border-radius:10px;padding:16px;text-align:center}.row{padding:11px;border-bottom:1px solid #eee}.langs{display:flex;gap:8px;flex-wrap:wrap}.langs button{border:1px solid #ddd;background:#fff;padding:8px;border-radius:8px}
+@media(max-width:900px){.nav{flex-wrap:wrap}.search{order:5;flex-basis:100%}.categories{grid-template-columns:repeat(4,1fr)}.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:30px}.heroart{font-size:65px}.footergrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.top{display:none}.categories{grid-template-columns:repeat(3,1fr)}.hero{margin:14px 4%;padding:28px 18px}.hero h1{font-size:24px}.heroart{font-size:45px}.grid{gap:9px}.footergrid{grid-template-columns:1fr}}
+
+.ai-top{background:#eaf7f3!important}
+.ai-panel{display:none;position:fixed;right:18px;bottom:18px;width:min(410px,calc(100vw - 36px));height:620px;background:#fff;z-index:40;border-radius:20px;box-shadow:0 12px 50px #0004;overflow:hidden;direction:rtl}
+.ai-head{background:linear-gradient(135deg,#063b70,#087b67);color:#fff;padding:15px 17px;display:flex;justify-content:space-between;align-items:center}
+.ai-head button{border:0;background:#ffffff22;color:#fff;border-radius:50%;font-size:20px}
+.ai-messages{height:425px;overflow:auto;padding:14px;background:#f4f7f9}
+.ai-msg{max-width:88%;padding:11px 13px;border-radius:14px;margin:8px 0;line-height:1.7;white-space:pre-wrap}
+.ai-msg.bot{background:#fff;border:1px solid #e6edf1;margin-left:auto}
+.ai-msg.user{background:#087b67;color:#fff;margin-right:auto}
+.ai-suggestions{display:flex;gap:6px;overflow:auto;padding:8px;background:#fff}
+.ai-suggestions button{white-space:nowrap;border:1px solid #dbe5ea;background:#f7fafb;border-radius:15px;padding:7px 10px;font-size:12px}
+.ai-input{display:flex;padding:9px;background:#fff;border-top:1px solid #eee}
+.ai-input input{flex:1;border:1px solid #ddd;border-radius:10px;padding:10px}
+.ai-input button{border:0;background:#f28c18;color:#fff;border-radius:10px;width:48px;margin-right:5px}
+</style></head>
+<body>
+<div class="top"><span>🇦🇫 <span id="tag">افغانانو لپاره آنلاین بازار</span></span><span><button style="border:0;background:transparent;color:#fff" onclick="languages()">🌐 Language</button></span></div>
+<div class="nav"><div class="logo">Afghan <b>Online</b> Bazaar</div><div class="search"><input id="q" placeholder="محصول ولټوئ..." oninput="loadProducts()"><button onclick="loadProducts()">🔎</button></div><button class="iconbtn" onclick="account()">👤</button><button class="iconbtn" onclick="dashboard()">📊</button><button class="iconbtn" onclick="ownerSettings()">⚙️</button><button class="iconbtn" onclick="cartView()">🛒 <span id="cartCount">0</span></button><button class="iconbtn" onclick="showNotifications()">🔔</button><button class="iconbtn ai-top" onclick="openAssistant()">🤖 AI</button></div>
+
+<div class="hero"><div><h1 id="heroTitle">هر څه، په یو آنلاین بازار کې</h1><p id="heroText">د افغانانو لپاره اسانه، خوندي او باوري آنلاین پیرود او خرڅلاو. له کور څخه خپل اړین توکي پیدا کړئ او د افغانستان تر هرې سیمې یې وغواړئ.</p><button class="primary" onclick="document.getElementById('products').scrollIntoView()">🛍️ محصولات وګورئ</button></div><div class="heroart">🛒</div></div>
+
+<div class="container"><h2>کټګورۍ</h2><div id="categories" class="categories"></div></div>
+<div class="container" id="products"><h2>مشهور محصولات</h2><div id="grid" class="grid"></div></div>
+
+<div class="container"><div class="panel" style="padding:22px"><h2>🇦🇫 د افغانانو لپاره زموږ موخه</h2>
+<p style="line-height:2">Afghan Online Bazaar د علي عظيمي او مصنوعي ځیرکتیا په مرسته د دې لپاره جوړېږي چې افغانانو ته د آنلاین پیرود او خرڅلاو یو اسانه، خوندي او باوري چاپېریال برابر کړي. زموږ موخه دا ده چې خلک وکولای شي محصولات په اسانه پیدا، مقایسه او واخلي، او افغان پلورونکي وکولای شي خپل کاروبار د هېواد له هرې برخې څخه آنلاین پراخ کړي.</p>
+<p style="line-height:2">موږ باور لرو چې مصنوعي ځیرکتیا باید یوازې د تفریح لپاره نه وي؛ بلکې د خلکو د ورځني ژوند د اسانتیا، د کاروبار د ودې او د افغانستان د ډیجیټل اقتصاد د پیاوړتیا لپاره هم وکارول شي.</p>
+<button class="green" onclick="sellerCenter()">🏪 Seller Center</button></div></div>
+
+<footer><div class="footergrid"><div><h2>AOB</h2><p>Afghan Online Bazaar</p></div><div><h3>خدمتونه</h3><p>پیرود • خرڅلاو • Delivery • Support</p></div><div><h3>ژبې</h3><p>پښتو • دري • English • 中文 • اردو • Français</p></div><div><h3>تماس</h3><p>alikhanazemi@gmail.com</p></div></div><hr><p>© 2026 Afghan Online Bazaar — By Ali Azimi</p></footer>
+
+<div id="modal" class="modal"><div class="box"><button class="close" onclick="closeModal()">×</button><div id="modalBody"></div></div></div>
+<div id="aiPanel" class="ai-panel">
+  <div class="ai-head"><b>🤖 AOB AI مرستیال</b><button onclick="closeAssistant()">×</button></div>
+  <div id="aiMessages" class="ai-messages"><div class="ai-msg bot">سلام! زه د AOB هوښیار مرستیال یم. د محصول، بیې، فرمایش، Delivery یا د اخیستلو په اړه پوښتنه وکړئ.</div></div>
+  <div class="ai-suggestions">
+    <button onclick="aiAsk('زما لپاره د 20000 افغانیو لاندې ښه موبایل پیدا کړه')">📱 موبایل پیدا کړه</button>
+    <button onclick="aiAsk('زما فرمایش څنګه تعقیب کړم؟')">📦 فرمایش</button>
+    <button onclick="aiAsk('د افغانستان Delivery څنګه کار کوي؟')">🚚 Delivery</button>
+  </div>
+  <div class="ai-input"><input id="aiInput" placeholder="له AOB AI څخه پوښتنه وکړئ..." onkeydown="if(event.key==='Enter')aiSend()"><button onclick="aiSend()">➤</button></div>
+</div>
+<script>
+const LANGS={ps:{tag:"افغانانو لپاره آنلاین بازار",hero:"هر څه، په یو آنلاین بازار کې",text:"د افغانانو لپاره اسانه، خوندي او باوري آنلاین پیرود او خرڅلاو.",search:"محصول ولټوئ..."},fa:{tag:"بازار آنلاین برای افغان‌ها",hero:"همه چیز در یک بازار آنلاین",text:"خرید و فروش آسان، امن و قابل اعتماد برای افغان‌ها.",search:"جستجوی محصول..."},en:{tag:"Online marketplace for Afghanistan",hero:"Everything in one online marketplace",text:"Easy, secure and trusted online shopping and selling for Afghanistan.",search:"Search products..."},zh:{tag:"阿富汗在线购物市场",hero:"一个在线市场，满足所有需求",text:"为阿富汗用户提供简单、安全、可靠的在线购物和销售。",search:"搜索商品..."},ur:{tag:"افغانستان کے لیے آن لائن بازار",hero:"ایک آن لائن بازار میں سب کچھ",text:"افغانستان کے لیے آسان، محفوظ اور قابل اعتماد آن لائن خرید و فروخت۔",search:"مصنوعات تلاش کریں..."},fr:{tag:"Marché en ligne pour l'Afghanistan",hero:"Tout dans une seule marketplace",text:"Achetez et vendez facilement et en toute sécurité en Afghanistan.",search:"Rechercher un produit..."}};
+const icons={"موبایل":"📱","کمپیوټر":"💻","فیشن":"👕","کور":"🏠","موټر":"🚗","ورزش":"⚽","نور":"📦"};
+let lang=localStorage.aobLang||"ps",cart=JSON.parse(localStorage.aobCart||"[]");
+const $=id=>document.getElementById(id);
+function applyLang(){let x=LANGS[lang];$("tag").textContent=x.tag;$("heroTitle").textContent=x.hero;$("heroText").textContent=x.text;$("q").placeholder=x.search;document.documentElement.dir=["en","fr","zh"].includes(lang)?"ltr":"rtl";document.documentElement.lang=lang}
+function openModal(){ $("modal").style.display="flex"}function closeModal(){ $("modal").style.display="none"}
+async function loadCategories(){let a=await fetch("/api/categories").then(r=>r.json());$("categories").innerHTML=a.map(c=>`<div class=category onclick="loadProducts('${c.slug}')"><span class=ico>${icons[c.name]||"📦"}</span>${c.name}</div>`).join("")}
+async function loadProducts(category=""){let url="/api/products?q="+encodeURIComponent($("q").value);if(category)url+="&category="+encodeURIComponent(category);let a=await fetch(url).then(r=>r.json());$("grid").innerHTML=a.map(p=>`<div class=card><div class=photo>${p.images_json&&p.images_json!=="[]"?"🖼️":"📦"}</div><div class=info><small class=muted>${p.category} • ${p.seller}</small><h3>${p.name}</h3><div class=price>${Number(p.price_afn).toLocaleString()} AFN</div><small class=muted>${p.description||""} • Stock: ${p.stock}</small><button class=green onclick='addToCart(${JSON.stringify({id:p.id,name:p.name,price:p.price_afn})})'>🛒 Add to Cart</button><button class=secondary onclick="viewProduct(${p.id})">تفصیل او Reviews</button></div></div>`).join("")}
+function addToCart(p){cart.push({product_id:p.id,name:p.name,price:p.price,qty:1});localStorage.aobCart=JSON.stringify(cart);$("cartCount").textContent=cart.length}
+function cartView(){openModal();let total=cart.reduce((s,x)=>s+x.price*x.qty,0);$("modalBody").innerHTML=`<h2>🛒 Shopping Cart</h2>${cart.map((x,i)=>`<div class=row>${x.name} × ${x.qty}<b style="float:left">${(x.price*x.qty).toLocaleString()} AFN</b></div>`).join("")||"<p>سبد خالي دی.</p>"}${cart.length?`<h3>Total: ${total.toLocaleString()} AFN</h3><input id=address placeholder="د سپارلو پته / Delivery address"><select id=payment><option value=cod>Cash on Delivery</option><option value=online>Online Payment — Gateway to be connected</option></select><button class=primary onclick=checkout()>Place Order</button>`:""}`}
+async function checkout(){let r=await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:cart,address:$("address").value,payment_method:$("payment").value})});let d=await r.json();if(r.status===401){account();return}if(!r.ok){alert(d.error);return}alert("Order #"+d.order_id+" ثبت شو.");cart=[];localStorage.aobCart="[]";$("cartCount").textContent=0;closeModal()}
+function account(){openAuth();}
+async function register(){let r=await fetch("/api/auth/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:$("name").value,email:$("email").value,password:$("password").value})}),d=await r.json();$("accountMsg").textContent=d.error||"Account created ✓"}
+async function login(){let r=await fetch("/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:$("email").value,password:$("password").value})}),d=await r.json();$("accountMsg").textContent=d.error||"Logged in ✓"}
+function languages(){openModal();$("modalBody").innerHTML="<h2>🌐 Language</h2><div class=langs>"+Object.keys(LANGS).map(x=>`<button onclick="lang='${x}';localStorage.aobLang='${x}';applyLang();closeModal()">${x}</button>`).join("")+"</div>"}
+async function viewProduct(id){let p=await fetch("/api/products/"+id).then(r=>r.json());openModal();$("modalBody").innerHTML=`<h2>${p.name}</h2><p>${p.description||""}</p><h3>${Number(p.price_afn).toLocaleString()} AFN</h3><h3>Reviews</h3>${(p.reviews||[]).map(r=>`<div class=row>⭐ ${r.rating}/5 — ${r.comment||""}<small>${r.name}</small></div>`).join("")||"<p>No reviews yet.</p>"}<hr><h3>Write a review</h3><select id=rating><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select><textarea id=comment placeholder=Comment></textarea><button class=primary onclick="sendReview(${id})">Send Review</button>`}
+async function sendReview(id){let r=await fetch("/api/reviews",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({product_id:id,rating:$("rating").value,comment:$("comment").value})});if(r.status===401){account();return}closeModal()}
+async function showNotifications(){let r=await fetch("/api/notifications");if(r.status===401){account();return}let a=await r.json();openModal();$("modalBody").innerHTML="<h2>🔔 Notifications</h2>"+a.map(x=>`<div class=row>${x.message}<small>${x.created_at}</small></div>`).join("")}
+
+async function dashboard(){
+ const me=await fetch("/api/me").then(r=>r.json());
+ if(!me.user){account();return}
+ openModal();
+ if(me.user.role==="admin"){
+   const r=await fetch("/api/admin/stats"); const d=await r.json();
+   if(!r.ok){$("modalBody").innerHTML="<p>Access denied.</p>";return}
+   $("modalBody").innerHTML=`<h2>👑 AOB Admin Dashboard</h2>
+   <div class=stats><div class=stat><b>${d.users}</b><br>Users</div><div class=stat><b>${d.sellers}</b><br>Sellers</div><div class=stat><b>${d.products}</b><br>Products</div><div class=stat><b>${d.orders}</b><br>Orders</div></div>
+   <h3>Revenue (paid)</h3><p>${Number(d.revenue_afn).toLocaleString()} AFN</p>
+   <button class=primary onclick="adminOrders()">📦 Orders</button>
+   <button class=secondary onclick="adminUsers()">👥 Users/Sellers</button>
+   <button class=secondary onclick="adminReturns()">↩️ Returns</button>`;
+ } else if(me.user.role==="seller"){
+   const r=await fetch("/api/seller/products");const p=await r.json();
+   $("modalBody").innerHTML=`<h2>🏪 Seller Dashboard</h2><p>Products: ${p.length}</p><button class=primary onclick="sellerCenter()">➕ Add Product</button>
+   <h3>Your products</h3>${p.map(x=>`<div class=row>${x.name} — ${Number(x.price_afn).toLocaleString()} AFN — Stock ${x.stock}</div>`).join("")}`;
+ } else {
+   const r=await fetch("/api/orders");const o=await r.json();
+   $("modalBody").innerHTML=`<h2>👤 My Account</h2><p>${me.user.name} — ${me.user.email}</p><h3>My Orders</h3>${o.map(x=>`<div class=row>#${x.id} — ${x.order_status} — ${Number(x.total_afn).toLocaleString()} AFN</div>`).join("")||"<p>No orders yet.</p>"}`;
+ }
+}
+async function adminOrders(){let a=await fetch("/api/admin/orders").then(r=>r.json());$("modalBody").innerHTML="<h2>Orders</h2>"+a.map(x=>`<div class=row>#${x.id} — ${x.name} — ${x.total_afn} AFN — ${x.order_status}<br><button class=secondary onclick="setOrderStatus(${x.id})">Update status</button></div>`).join("")}
+async function setOrderStatus(id){let st=prompt("Status: pending / confirmed / shipped / delivered / cancelled","confirmed");if(!st)return;await fetch("/api/admin/orders/"+id+"/status",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:st})});adminOrders()}
+async function adminUsers(){let a=await fetch("/api/admin/users").then(r=>r.json());$("modalBody").innerHTML="<h2>Users & Sellers</h2>"+a.map(x=>`<div class=row>#${x.id} — ${x.name} — ${x.role} — ${x.email}</div>`).join("")}
+async function adminReturns(){let a=await fetch("/api/admin/returns").then(r=>r.json());$("modalBody").innerHTML="<h2>Returns</h2>"+a.map(x=>`<div class=row>#${x.id} — Order #${x.order_id} — ${x.status}<br>${x.reason||""}<button class=secondary onclick="setReturnStatus(${x.id})">Update</button></div>`).join("")}
+async function setReturnStatus(id){let st=prompt("requested / approved / rejected / received / refunded / closed","approved");if(!st)return;await fetch("/api/admin/returns/"+id+"/status",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({status:st})});adminReturns()}
+
+function sellerCenter(){openModal();$("modalBody").innerHTML=`<h2>🏪 Seller Center</h2><p>Demo account: seller@aob.af / Seller123!</p><p>د حقیقي استعمال لپاره Seller login وکړئ.</p><input id=pn placeholder="Product name"><input id=pc type=number placeholder="Category ID"><input id=pp type=number placeholder="Price AFN"><input id=pu type=number placeholder="Price USD"><input id=stock type=number placeholder="Stock"><input id=sku placeholder="SKU"><textarea id=pd placeholder="Description"></textarea><button class=primary onclick=addProduct()>Add Product</button><p id=smsg></p>`}
+async function addProduct(){let r=await fetch("/api/seller/products",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:$("pn").value,category_id:$("pc").value,price_afn:$("pp").value,price_usd:$("pu").value,stock:$("stock").value,sku:$("sku").value,description:$("pd").value})}),d=await r.json();$("smsg").textContent=d.error||"Product added ✓";if(r.ok)loadProducts()}
+
+
+function openAuth(){
+ openModal();
+ $("modalBody").innerHTML=`<h2>🔐 AOB Global Login</h2>
+ <p class=muted>Email یا نړیوال Phone Number استعمال کړئ.</p>
+ <label>Email یا Phone</label><input id=authIdentifier placeholder="+937XXXXXXXXX یا name@example.com">
+ <label>Password</label><input id=authPassword type=password minlength=8>
+ <button class=primary onclick="doLogin()">Login</button>
+ <button class=secondary onclick="openRegister()">Create Account</button>
+ <button class=secondary onclick="requestOtp()">📱/📧 OTP</button><p id=authMsg class=muted></p>`;
+}
+async function doLogin(){
+ const r=await fetch("/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({identifier:$("authIdentifier").value,password:$("authPassword").value})});
+ const d=await r.json();$("authMsg").textContent=r.ok?"Login successful ✓":(d.error||"Login failed");if(r.ok)setTimeout(closeModal,400);
+}
+function openRegister(){
+ $("modalBody").innerHTML=`<h2>📝 Create AOB Account</h2><label>Name</label><input id=regName>
+ <label>Email (optional)</label><input id=regEmail type=email><label>International Phone (optional)</label><input id=regPhone placeholder="+937XXXXXXXXX">
+ <label>Password (8+)</label><input id=regPassword type=password><button class=primary onclick="doRegister()">Create Account</button>
+ <button class=secondary onclick="openAuth()">Back</button><p id=regMsg class=muted></p>`;
+}
+async function doRegister(){
+ const body={name:$("regName").value,email:$("regEmail").value,phone:$("regPhone").value,password:$("regPassword").value};
+ const r=await fetch("/api/auth/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+ const d=await r.json();$("regMsg").textContent=r.ok?"Account created ✓":(d.error||"Registration failed");if(r.ok)setTimeout(closeModal,400);
+}
+async function requestOtp(){
+ const identifier=prompt("Email یا نړیوال Phone Number ولیکئ:");
+ if(!identifier)return;
+ const r=await fetch("/api/auth/request-otp",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({identifier})});
+ const d=await r.json();alert(r.ok?"OTP request accepted؛ د SMS/Email provider باید configure شي.":(d.error||"OTP failed"));
+}
+
+function ownerSettings(){
+ openModal();
+ const c=JSON.parse(localStorage.aobOwner||'{}');
+ $("modalBody").innerHTML=`<h2>⚙️ AOB Owner Settings</h2>
+ <p class=muted>دا برخه د AOB مالک لپاره ده. معلومات په دې Demo کې ستا په براوزر کې خوندي کېږي.</p>
+ <label>د پروژې نوم</label><input id=os_name value="${c.name||'Afghan Online Bazaar'}">
+ <label>Contact Email</label><input id=os_email value="${c.email||'alikhanazemi@gmail.com'}">
+ <label>Support Phone</label><input id=os_phone value="${c.phone||''}" placeholder="خپل رسمي نمبر دلته ولیکه">
+ <label>Office / Address</label><input id=os_address value="${c.address||''}" placeholder="اختیاري">
+ <label>د Delivery عمومي فیس (AFN)</label><input id=os_delivery type=number value="${c.delivery||0}">
+ <label>About / Mission</label><textarea id=os_about rows=6>${c.about||'Afghan Online Bazaar د افغانانو لپاره اسانه، خوندي او باوري آنلاین پیرود او خرڅلاو برابروي.'}</textarea>
+ <label>Facebook / Social Link</label><input id=os_social value="${c.social||''}" placeholder="اختیاري">
+ <button class=primary onclick="saveOwnerSettings()">💾 Save Settings</button>
+ <button class=secondary onclick="resetOwnerSettings()">Reset</button>
+ <hr><p><b>Production کې پاتې:</b> Domain، Payment، SMS/OTP، AI API، Delivery API، Email SMTP او Hosting credentials.</p>`;
+}
+function saveOwnerSettings(){
+ const c={name:$("os_name").value,email:$("os_email").value,phone:$("os_phone").value,address:$("os_address").value,
+ delivery:$("os_delivery").value,about:$("os_about").value,social:$("os_social").value};
+ localStorage.aobOwner=JSON.stringify(c);
+ alert("AOB settings saved ✓");
+ closeModal(); applyOwnerSettings();
+}
+function applyOwnerSettings(){
+ const c=JSON.parse(localStorage.aobOwner||'{}');
+ if(c.name) document.querySelector(".logo").innerHTML=c.name.replace("Online","<b>Online</b>");
+ if(c.email){ document.querySelector("footer").innerHTML=document.querySelector("footer").innerHTML.replace(/alikhanazemi@gmail\.com/g,c.email); }
+ if(c.about){ const p=document.querySelector(".panel p"); if(p) p.textContent=c.about; }
+}
+function resetOwnerSettings(){localStorage.removeItem("aobOwner");applyOwnerSettings();closeModal()}
+
+
+function openAssistant(){ $("aiPanel").style.display="block"; setTimeout(()=>$("aiInput").focus(),50); }
+function closeAssistant(){ $("aiPanel").style.display="none"; }
+function addAiMsg(text,who){ const d=document.createElement("div"); d.className="ai-msg "+who; d.textContent=text; $("aiMessages").appendChild(d); $("aiMessages").scrollTop=$("aiMessages").scrollHeight; }
+function aiAsk(q){ $("aiInput").value=q; aiSend(); }
+async function aiSend(){
+ const input=$("aiInput"), q=input.value.trim(); if(!q)return;
+ addAiMsg(q,"user"); input.value="";
+ const thinking=document.createElement("div"); thinking.className="ai-msg bot"; thinking.id="aiThinking"; thinking.textContent="یوه شېبه..."; $("aiMessages").appendChild(thinking);
+ try{
+   const r=await fetch("/api/ai/assist",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:q,language:lang})});
+   const d=await r.json(); thinking.remove(); addAiMsg(d.reply||"بخښنه، اوس ځواب نه شم ورکولای.","bot");
+   if(Array.isArray(d.products)&&d.products.length){
+     d.products.forEach(p=>addAiMsg(`🛍️ ${p.name}\n💰 ${Number(p.price_afn).toLocaleString()} AFN\n📦 Stock: ${p.stock}`, "bot"));
+   }
+ }catch(e){thinking.remove();addAiMsg("اوسمهال د AI خدمت سره اړیکه نشته. مهرباني وکړئ لږ وروسته بیا هڅه وکړئ.","bot")}
+}
+
+applyLang();applyOwnerSettings();loadCategories();loadProducts();$("cartCount").textContent=cart.length;
+</script></body></html>
